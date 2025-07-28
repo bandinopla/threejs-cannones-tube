@@ -4,6 +4,7 @@ import * as THREE from 'three'
 import * as CANNON from 'cannon-es'
 import { CannonTubeRig } from './CannonEsThreeJsTubes'
 import GUI from 'three/examples/jsm/libs/lil-gui.module.min.js'
+import { OrbitControls } from 'three/examples/jsm/Addons.js'
 
 const gui = new GUI();
 
@@ -42,7 +43,7 @@ scene.add(light)
 camera.position.z = 1
 camera.position.x = .5
 
-const tube = new CannonTubeRig(1, 20, 0.02);
+const tube = new CannonTubeRig(1, 20, 0.02, 8, true);
 tube.material = new THREE.MeshPhysicalMaterial({ color: 0xff0000 })
 scene.add(tube)
 tube.addToPhysicalWorld(world)
@@ -70,6 +71,8 @@ const p0 = new CANNON.Body({
 world.addBody(p0)
 world.addConstraint(new CANNON.PointToPointConstraint(tube.head, new CANNON.Vec3(0, 0, 0), p0, new CANNON.Vec3(0, 0, 0)))
 
+scene.add(new THREE.AmbientLight())
+new OrbitControls(camera, renderer.domElement)
 
 const clock = new THREE.Clock()
 function animate() {

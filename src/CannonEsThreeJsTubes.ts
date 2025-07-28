@@ -18,6 +18,10 @@ export class CannonTubeRig extends SkinnedMesh {
     private _tension = 0;
     private _segmentLength;
 
+    /**
+     * This controls the offset of the bodies along the segment, effectively elongating or reducing the distance between them.
+     * The number is a multiplier. Calibrate this by eye...
+     */
     get tension() {
         return this._tension;
     }
@@ -135,13 +139,7 @@ export class CannonTubeRig extends SkinnedMesh {
     /**
      * Makes the bones align with the CANNON-ES physical bodies
      */
-    syncRig() {
- 
-        //this.mesh.position.set(rootPos.x, rootPos.y, rootPos.z);
-
-        // this.constraints.forEach( c => {
-        //     c.pivotB.y += 0.0001
-        // })
+    syncRig() { 
 
         //
         // sync the bones with the physicl objects
@@ -155,12 +153,10 @@ export class CannonTubeRig extends SkinnedMesh {
             // 1. world transform from cannon
             const pos = new THREE.Vector3().copy(body.position); 
  
-
-            // bone.updateMatrixWorld()
+ 
             // 2. convert to the bone’s parent space
             if (bone.parent) {
-                bone.parent.worldToLocal(pos);
-                // quaternions are absolute, so we just copy
+                bone.parent.worldToLocal(pos); 
             }
 
             // 3. set local transform

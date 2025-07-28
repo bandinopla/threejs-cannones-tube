@@ -1,4 +1,4 @@
-![cover](cover.jpg)
+![cover](https://github.com/bandinopla/threejs-cannones-tube/raw/main/cover.jpg)
 # Threejs + CANNON-es = TUBES!!
 Ever felt a deep existential sadness because making flexible 3D tubes that obey physics is a total brain-melter? Of course you did! Me too! So I bullied a few of my brain cells into holding hands, forming a support group, and conjuring up this lovely little package to make the pain go away. You're welcome.
 

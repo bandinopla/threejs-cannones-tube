@@ -4,7 +4,7 @@
     "name": "pablo bandinopla",
     "url": "https://github.com/bandinopla"
   },
-  "version": "0.0.1",
+  "version": "0.0.2",
   "type": "module",
   "files": [
     "dist"
