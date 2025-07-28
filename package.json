@@ -1,0 +1,37 @@
+{
+  "name": "threejs-cannones-tube",
+  "author": {
+    "name": "pablo bandinopla",
+    "url": "https://github.com/bandinopla"
+  },
+  "version": "0.0.1",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/cannones-threejs-tubes.umd.cjs",
+  "module": "./dist/cannones-threejs-tubes.js",
+  "exports": {
+    ".": {
+      "import": "./dist/cannones-threejs-tubes.js",
+      "require": "./dist/cannones-threejs-tubes.umd.cjs"
+    }
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@types/three": "^0.178.1",
+    "cannon-es": "^0.20.0",
+    "three": "^0.178.0",
+    "typescript": "~5.8.3",
+    "vite": "^7.0.4",
+    "vite-plugin-dts": "^4.5.4"
+  },
+  "peerDependencies": {
+    "cannon-es": "^0.20.0",
+    "three": "^0.178.0"
+  }
+}
