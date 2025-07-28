@@ -9,12 +9,12 @@
   "files": [
     "dist"
   ],
-  "main": "./dist/cannones-threejs-tubes.umd.cjs",
+  "main": "./dist/cannones-threejs-tubes.cjs",
   "module": "./dist/cannones-threejs-tubes.js",
   "exports": {
     ".": {
       "import": "./dist/cannones-threejs-tubes.js",
-      "require": "./dist/cannones-threejs-tubes.umd.cjs"
+      "require": "./dist/cannones-threejs-tubes.cjs"
     }
   },
   "scripts": {
