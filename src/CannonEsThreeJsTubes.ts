@@ -207,7 +207,7 @@ export class CannonTubeRig extends SkinnedMesh {
 
         let pos = new CANNON.Vec3(this.position.x, this.position.y, this.position.z)
 
-        this.bodies.forEach( (body, i)=>{
+        this.bodies.forEach( body =>{
  
             body.position.copy( pos )
 

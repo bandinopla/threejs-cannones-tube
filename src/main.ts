@@ -87,6 +87,7 @@ world.addConstraint(new CANNON.PointToPointConstraint(tube.head, new CANNON.Vec3
 scene.add(new THREE.AmbientLight())
 new OrbitControls(camera, renderer.domElement)
 
+    //@ts-ignore
     const cannonDebugger = new CannonDebugger(scene, world, {
       color: 0xff00ff,   // wireframe colour
       scale: 1.9            // overall scale
