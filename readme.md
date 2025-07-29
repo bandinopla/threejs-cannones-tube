@@ -10,7 +10,7 @@ npm install threejs-cannones-tube
 
 # Use
 ```js
-import { CannonTubeRig } from './CannonEsThreeJsTubes'
+import { CannonTubeRig } from 'threejs-cannones-tube'
 const tube = new CannonTubeRig(
     1, // length in world units 
     20, // resolution along the segment's length
