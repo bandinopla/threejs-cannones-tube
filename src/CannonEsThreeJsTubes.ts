@@ -200,12 +200,12 @@ export class CannonTubeRig extends SkinnedMesh {
 
     private _realignBodies( tailTarget:CANNON.Vec3 )
     {
-        let step = tailTarget.vsub(this.head.position);
+        let pos = new CANNON.Vec3(this.position.x, this.position.y, this.position.z);
+        let step = tailTarget.vsub(pos);
 
         step.normalize();
         step.scale(this._segmentLength, step);
 
-        let pos = new CANNON.Vec3(this.position.x, this.position.y, this.position.z)
 
         this.bodies.forEach( body =>{
  
