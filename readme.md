@@ -35,6 +35,13 @@ To align the tube, move the object like any other Object3D and use `lootAt` to m
  tube.lookAt( somePointOfInterest)
 ```
 
+# Tension
+You can tweak a property `tension` that is a number uset to scale the offset between segments... effectively contracting or exanding it will make the tube longer or shorter...
+
+```js
+tube.tension = 1.3; // tweak this...
+```
+
 **this will reposition the physical bodies and update their offsets** I haven't tested changing these for animating only during setup to place the tube where I want before starting the simulation. (before the first render)
 
 # Remove

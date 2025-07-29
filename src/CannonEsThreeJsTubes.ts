@@ -6,7 +6,9 @@ export class CannonTubeRig extends SkinnedMesh {
 
     readonly bodies: CANNON.Body[];
     readonly constraints: CANNON.PointToPointConstraint[];
-    readonly bones: THREE.Bone[]
+    readonly bones: THREE.Bone[];
+
+    private _offset:CANNON.Vec3;
 
     get tail() {
         return this.bodies.at(-1)!
@@ -31,7 +33,9 @@ export class CannonTubeRig extends SkinnedMesh {
         this._tension = v;
 
         this.constraints.forEach( c => {
-             c.pivotB.x = -this._segmentLength/2 + this._segmentLength*v
+            //c.pivotB.x = this._offset.negate() + this._segmentLength*v
+            c.pivotA.copy( this._offset.clone().scale(1+v))
+            c.pivotB.copy( this._offset.clone().negate().scale(1+v))
         })
     }
 
@@ -47,6 +51,7 @@ export class CannonTubeRig extends SkinnedMesh {
         const bones = [];
 
         const segmentLength = length / segments;
+        const offset = new CANNON.Vec3(segmentLength / 2, 0, 0)
 
         // Create Cannon bodies
         for (let i = 0; i <= segments; i++) {
@@ -61,8 +66,8 @@ export class CannonTubeRig extends SkinnedMesh {
 
             if (i > 0) {
                 const constraint = new CANNON.PointToPointConstraint(
-                    bodies[i - 1], new CANNON.Vec3(segmentLength / 2, 0, 0),
-                    bodies[i], new CANNON.Vec3(-segmentLength / 2, 0, 0)
+                    bodies[i - 1], offset,
+                    bodies[i], offset.clone().negate()
                 );
                 //world.addConstraint(constraint);
                 constraints.push(constraint);
@@ -120,6 +125,7 @@ export class CannonTubeRig extends SkinnedMesh {
         this.bones = bones;
         this._segmentLength = segmentLength;
         this.length = length;
+        this._offset = offset;
     }
 
     /**
@@ -206,6 +212,8 @@ export class CannonTubeRig extends SkinnedMesh {
         step.normalize();
         step.scale(this._segmentLength, step);
 
+        this._offset.copy( step.clone().scale(0.5) );
+
 
         this.bodies.forEach( body =>{
  
@@ -215,8 +223,8 @@ export class CannonTubeRig extends SkinnedMesh {
         });
 
         this.constraints.forEach( c => {
-            c.pivotA.copy( step.clone().scale(0.5) );
-            c.pivotB.copy( step.clone().scale(-0.5) );
+            c.pivotA.copy( this._offset );
+            c.pivotB.copy( this._offset.clone().negate() );
         })
     }
 
