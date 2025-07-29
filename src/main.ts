@@ -5,6 +5,7 @@ import * as CANNON from 'cannon-es'
 import { CannonTubeRig } from './CannonEsThreeJsTubes'
 import GUI from 'three/examples/jsm/libs/lil-gui.module.min.js'
 import { OrbitControls } from 'three/examples/jsm/Addons.js'
+import CannonDebugger from 'cannon-es-debugger';
 
 const gui = new GUI();
 
@@ -15,9 +16,11 @@ world.defaultContactMaterial.contactEquationStiffness = 1e9
 
 // Stabilization time in number of timesteps
 world.defaultContactMaterial.contactEquationRelaxation = 4
-world.gravity.set(0, -10, 0)
+world.gravity.set(0,  -10, 0)
 const timeStep = 1 / 120
 //world.solver.iterations = 20 
+
+
 
 
 const scene = new THREE.Scene()
@@ -41,14 +44,7 @@ light.position.set(1, 1, 1)
 scene.add(light)
 
 camera.position.z = 1
-camera.position.x = .5
-
-const tube = new CannonTubeRig(1, 20, 0.02, 8, true);
-tube.material = new THREE.MeshPhysicalMaterial({ color: 0xff0000 })
-scene.add(tube)
-tube.addToPhysicalWorld(world)
-
-gui.add(tube, "tension", -2, 2)
+camera.position.x = .5 
 
 
 const pin = new CANNON.Body({
@@ -57,10 +53,8 @@ const pin = new CANNON.Body({
     type: CANNON.Body.KINEMATIC,
     collisionResponse: false
 })
-pin.position.set(1, 0, 0)
-world.addBody(pin)
-
-world.addConstraint(new CANNON.PointToPointConstraint(tube.tail, new CANNON.Vec3(0, 0, 0), pin, new CANNON.Vec3(0, 0, 0)))
+pin.position.set(.3, -.3, 0)
+world.addBody(pin) 
 
 const p0 = new CANNON.Body({
     shape: new CANNON.Sphere(0.01),
@@ -69,17 +63,42 @@ const p0 = new CANNON.Body({
     collisionResponse: false
 })
 world.addBody(p0)
+
+
+const tube = new CannonTubeRig( p0.position.distanceTo(pin.position) , 20, 0.02, 8, true);
+tube.material = new THREE.MeshPhysicalMaterial({ color: 0xff0000 })
+scene.add(tube)
+tube.addToPhysicalWorld(world)
+const a = new THREE.AxesHelper(0.1)
+scene.add(a)
+a.position.copy( pin.position )
+
+
+gui.add(tube, "tension", -2, 2)
+
+
+ tube.position.set(0,.1,0)
+ tube.lookAt(new THREE.Vector3().copy(pin.position))
+
+
+world.addConstraint(new CANNON.PointToPointConstraint(tube.tail, new CANNON.Vec3(0, 0, 0), pin, new CANNON.Vec3(0, 0, 0)))
 world.addConstraint(new CANNON.PointToPointConstraint(tube.head, new CANNON.Vec3(0, 0, 0), p0, new CANNON.Vec3(0, 0, 0)))
 
 scene.add(new THREE.AmbientLight())
 new OrbitControls(camera, renderer.domElement)
 
+    const cannonDebugger = new CannonDebugger(scene, world, {
+      color: 0xff00ff,   // wireframe colour
+      scale: 1.9            // overall scale
+    });
+
 const clock = new THREE.Clock()
 function animate() {
     requestAnimationFrame(animate)
 
-    pin.position.x = 1 + Math.cos(performance.now() / 990) * .3
+    //pin.position.x = 1 + Math.cos(performance.now() / 990) * .3
 
+    cannonDebugger.update();
     world.step(timeStep, clock.getDelta(), 6);
     tube.syncRig(); 
     renderer.render(scene, camera)

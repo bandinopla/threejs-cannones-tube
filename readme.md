@@ -27,6 +27,16 @@ function update() {
 }
 ```
 
+# Align
+To align the tube, move the object like any other Object3D and use `lootAt` to make the tube point at a specific target point...
+
+```js
+ tube.position.copy( targetPosition )
+ tube.lookAt( somePointOfInterest)
+```
+
+**this will reposition the physical bodies and update their offsets** I haven't tested changing these for animating only during setup to place the tube where I want before starting the simulation. (before the first render)
+
 # Remove
 ```js
 tube.removeFromPhysicalWorld( world )

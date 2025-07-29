@@ -14,6 +14,9 @@ importers:
       cannon-es:
         specifier: ^0.20.0
         version: 0.20.0
+      cannon-es-debugger:
+        specifier: ^1.0.0
+        version: 1.0.0(cannon-es@0.20.0)(three@0.178.0)(typescript@5.8.3)
       three:
         specifier: ^0.178.0
         version: 0.178.0
@@ -443,6 +446,16 @@ packages:
 
   brace-expansion@2.0.2:
     resolution: {integrity: sha512-Jt0vHyM+jmUBqojB7E1NIYadt0vI0Qxjxd2TErW94wDz+E2LAm5vKMXXwg6ZZBTHPuUlDgQHKXvjGBdfcF1ZDQ==}
+
+  cannon-es-debugger@1.0.0:
+    resolution: {integrity: sha512-sE9lDOBAYFKlh+0w+cvWKwUhJef8HYnUSVPWPL0jD15MAuVRQKno4QYZSGxgOoJkMR3mQqxL4bxys2b3RSWH8g==}
+    peerDependencies:
+      cannon-es: 0.x
+      three: 0.x
+      typescript: '>=3.8'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
 
   cannon-es@0.20.0:
     resolution: {integrity: sha512-eZhWTZIkFOnMAJOgfXJa9+b3kVlvG+FX4mdkpePev/w/rP5V8NRquGyEozcjPfEoXUlb+p7d9SUcmDSn14prOA==}
@@ -1083,6 +1096,13 @@ snapshots:
   brace-expansion@2.0.2:
     dependencies:
       balanced-match: 1.0.2
+
+  cannon-es-debugger@1.0.0(cannon-es@0.20.0)(three@0.178.0)(typescript@5.8.3):
+    dependencies:
+      cannon-es: 0.20.0
+      three: 0.178.0
+    optionalDependencies:
+      typescript: 5.8.3
 
   cannon-es@0.20.0: {}
 

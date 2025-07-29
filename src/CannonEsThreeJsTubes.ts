@@ -17,6 +17,7 @@ export class CannonTubeRig extends SkinnedMesh {
 
     private _tension = 0;
     private _segmentLength;
+    readonly length;
 
     /**
      * This controls the offset of the bodies along the segment, effectively elongating or reducing the distance between them.
@@ -118,6 +119,7 @@ export class CannonTubeRig extends SkinnedMesh {
         this.constraints = constraints;
         this.bones = bones;
         this._segmentLength = segmentLength;
+        this.length = length;
     }
 
     /**
@@ -176,4 +178,46 @@ export class CannonTubeRig extends SkinnedMesh {
 
         }
     }
+
+    override lookAt(vector: THREE.Vector3): void;
+    override lookAt(x: number, y: number, z: number): void;
+    override lookAt(arg1: any, arg2?: any, arg3?: any): void {
+
+        let target:CANNON.Vec3 = new CANNON.Vec3();
+
+        if (typeof arg1 === 'number' && arg2 !== undefined && arg3 !== undefined) {
+            super.lookAt(arg1, arg2, arg3);
+            target.set(arg1, arg2, arg3)
+        } else if (arg1 instanceof THREE.Vector3) {
+            super.lookAt(arg1);
+            target.set(arg1.x, arg1.y, arg1.z)
+        }
+        this.rotateY(-Math.PI / 2);
+
+        //align physical objects...
+        this._realignBodies(target); 
+    }
+
+    private _realignBodies( tailTarget:CANNON.Vec3 )
+    {
+        let step = tailTarget.vsub(this.head.position);
+
+        step.normalize();
+        step.scale(this._segmentLength, step);
+
+        let pos = new CANNON.Vec3(this.position.x, this.position.y, this.position.z)
+
+        this.bodies.forEach( (body, i)=>{
+ 
+            body.position.copy( pos )
+
+            pos.vadd( step, pos ) 
+        });
+
+        this.constraints.forEach( c => {
+            c.pivotA.copy( step.clone().scale(0.5) );
+            c.pivotB.copy( step.clone().scale(-0.5) );
+        })
+    }
+
 }
