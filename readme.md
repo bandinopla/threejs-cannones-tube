@@ -2,6 +2,10 @@
 # Threejs + CANNON-es = TUBES!!
 Ever felt a deep existential sadness because making flexible 3D tubes that obey physics is a total brain-melter? Of course you did! Me too! So I bullied a few of my brain cells into holding hands, forming a support group, and conjuring up this lovely little package to make the pain go away. You're welcome.
 
+# Live demo
+The cables of the claw machine here are done using this object:
+https://threejs-claw-machine.vercel.app/
+
 # Installation
 This uses [ThreeJs](https://threejs.org/) and [Cannon-es](https://pmndrs.github.io/cannon-es/)
 ```
@@ -25,6 +29,13 @@ function update() {
     //your update function....
     tube.syncRig(); //<-- will align the bones witht  he physical bodies 
 }
+```
+
+# Head and tail
+To get access to either the head or tail do...
+```js
+tube.head; // is a CANNON.Body
+tube.tail; // is a CANNON.Body
 ```
 
 # Align
