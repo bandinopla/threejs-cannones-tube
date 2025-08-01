@@ -37,8 +37,8 @@ export class CannonTubeRig extends SkinnedMesh {
 
         this.constraints.forEach( c => {
             //c.pivotB.x = this._offset.negate() + this._segmentLength*v
-            c.pivotA.copy( this._offset ).scale(1+v, c.pivotA)
-            c.pivotB.copy( this._offset ).negate().scale(1+v)
+            c.pivotA.copy( this._offset ).scale(1+v,c.pivotA)
+            c.pivotB.copy( this._offset ).negate().scale(1+v,c.pivotB)
         })
     }
 
@@ -228,7 +228,7 @@ export class CannonTubeRig extends SkinnedMesh {
 
         this.constraints.forEach( c => {
             c.pivotA.copy( this._offset );
-            c.pivotB.copy( this._offset.clone().negate() );
+            c.pivotB.copy( this._offset  ).negate(c.pivotB);
         })
     }
 
