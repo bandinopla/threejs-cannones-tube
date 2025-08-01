@@ -9,6 +9,9 @@ export class CannonTubeRig extends SkinnedMesh {
     readonly bones: THREE.Bone[];
 
     private _offset:CANNON.Vec3;
+    private _cvec:CANNON.Vec3 = new CANNON.Vec3();
+    private _step:CANNON.Vec3 = new CANNON.Vec3();
+    private _vec:THREE.Vector3 = new THREE.Vector3();
 
     get tail() {
         return this.bodies.at(-1)!
@@ -34,8 +37,8 @@ export class CannonTubeRig extends SkinnedMesh {
 
         this.constraints.forEach( c => {
             //c.pivotB.x = this._offset.negate() + this._segmentLength*v
-            c.pivotA.copy( this._offset.clone().scale(1+v))
-            c.pivotB.copy( this._offset.clone().negate().scale(1+v))
+            c.pivotA.copy( this._offset ).scale(1+v, c.pivotA)
+            c.pivotB.copy( this._offset ).negate().scale(1+v)
         })
     }
 
@@ -159,7 +162,7 @@ export class CannonTubeRig extends SkinnedMesh {
 
 
             // 1. world transform from cannon
-            const pos = new THREE.Vector3().copy(body.position); 
+            const pos = this._vec.copy(body.position); //new THREE.Vector3().copy(body.position); 
  
  
             // 2. convert to the bone’s parent space
@@ -171,11 +174,11 @@ export class CannonTubeRig extends SkinnedMesh {
             bone.position.copy(pos);
 
             if (prev) {
-                bone.lookAt(new THREE.Vector3().copy(this.bodies[i - 1].position))
+                bone.lookAt(this._vec.copy(this.bodies[i - 1].position))
                 bone.rotateY(Math.PI / 2)
 
                 if (i == 1) {
-                    prev.lookAt(new THREE.Vector3().copy(this.bodies[i].position))
+                    prev.lookAt(this._vec.copy(this.bodies[i].position))
                     prev.rotateY(-Math.PI / 2)
                 }
 
@@ -189,7 +192,7 @@ export class CannonTubeRig extends SkinnedMesh {
     override lookAt(x: number, y: number, z: number): void;
     override lookAt(arg1: any, arg2?: any, arg3?: any): void {
 
-        let target:CANNON.Vec3 = new CANNON.Vec3();
+        let target:CANNON.Vec3 = this._cvec;
 
         if (typeof arg1 === 'number' && arg2 !== undefined && arg3 !== undefined) {
             super.lookAt(arg1, arg2, arg3);
@@ -206,14 +209,15 @@ export class CannonTubeRig extends SkinnedMesh {
 
     private _realignBodies( tailTarget:CANNON.Vec3 )
     {
-        let pos = new CANNON.Vec3(this.position.x, this.position.y, this.position.z);
-        let step = tailTarget.vsub(pos);
+        let step = this._step.copy( tailTarget );
+        let pos = this._cvec.set(this.position.x, this.position.y, this.position.z);
+        
+        step.vsub(pos ); 
 
         step.normalize();
         step.scale(this._segmentLength, step);
 
-        this._offset.copy( step.clone().scale(0.5) );
-
+        this._offset.copy(step).scale(0.5,this._offset);
 
         this.bodies.forEach( body =>{
  
