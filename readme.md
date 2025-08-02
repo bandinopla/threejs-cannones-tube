@@ -39,7 +39,9 @@ tube.tail; // is a CANNON.Body
 ```
 
 # Align
-To align the tube, move the object like any other Object3D and use `lootAt` to make the tube point at a specific target point...
+To align the tube, move the object like any other Object3D and use `lootAt` to make the tube point at a specific target point... 
+
+**You must do these 2 steps, not just changing the position, because the "lookAt" is what triggers the alignment** (If you change the position but dont call lookAt nothing will happen)
 
 ```js
  tube.position.copy( targetPosition )
