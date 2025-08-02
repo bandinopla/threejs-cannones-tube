@@ -4,7 +4,7 @@
     "name": "pablo bandinopla",
     "url": "https://github.com/bandinopla"
   },
-  "version": "0.0.8",
+  "version": "0.0.9",
   "type": "module",
   "files": [
     "dist"
@@ -33,6 +33,6 @@
   },
   "peerDependencies": {
     "cannon-es": "^0.20.0",
-    "three": "^0.178.0"
+    "three": ">=0.178.0 <0.200.0"
   }
 }
